@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const initial = getStorage();
-   console.log(initial);
+  console.log(initial);
   const [tasks, dispatch] = useReducer(todoReducer, initial);
   useEffect(() => {
     saveLocal(tasks);
@@ -51,8 +51,13 @@ function App() {
         return Edittask;
       }
       case "TASK_DRAG": {
-        let newtodo = [...tasks];
-        newtodo[action.value.dragItemcurrent].instate = "progess";
+        let newtodo = tasks.filter((task) => {
+          if (task.id == action.value.id) {
+            task.instate = action.value.state;
+          }
+          return task;
+        });
+
         return newtodo;
       }
 
@@ -64,7 +69,7 @@ function App() {
   function handleAdd(value) {
     dispatch({
       type: "TASK_ADD",
-      value: value,
+      // value: value,
     });
   }
   function handledelete(id) {
@@ -80,21 +85,27 @@ function App() {
       value: { value, id },
     });
   }
-  function dragUpdate(dragItemcurrent, dragoverItemcurrent, id) {
+  function ondrag(event, state) {
+    let id = event.dataTransfer.getData("id");
+
     dispatch({
-      type: "TASK_DRAG",
-      value: { dragItemcurrent, dragoverItemcurrent, id },
+      type: "TASK_DROP",
+      value: { id, state },
     });
   }
-  // useEffect(() => {
-  //   localStorage.setItem("tasks", JSON.stringify(tasks));
-  // }, [tasks]);
+  const ondragover = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <h1 className="title-drello">Drello App </h1>
       <div className="container">
         <div className="row">
-          <div className="col  Todo-Card">
+          <div
+            className="col  Todo-Card"
+            onDragOver={(e) => ondragover(e)}
+            onDrag={(e) => ondrag(e, "todo")}>
             <Addtodolist
               addTask={(text) => {
                 handleAdd(text);
@@ -102,14 +113,19 @@ function App() {
               handledelete={handledelete}
               tasks={tasks}
               handleedit={handleedit}
-              dragUpadte={dragUpdate}
             />
           </div>
-          <div className="col Progess-card">
-            <Progess dragUpdate={dragUpdate} />
+          <div
+            className="col Progess-card"
+            onDragOver={(e) => ondragover(e)}
+            onDrag={(e) => ondrag(e, "progess")}>
+            <Progess tasks={tasks} handledelete={handledelete} />
           </div>
-          <div className="col Done-card">
-            <Done dragUpdate={dragUpdate} />
+          <div
+            className="col Done-card"
+            onDragOver={(e) => ondragover(e)}
+            onDrag={(e) => ondrag(e, "done")}>
+            <Done tasks={tasks} handledelete={handledelete} />
           </div>
         </div>
       </div>
@@ -142,4 +158,7 @@ export default App;
 // }
 // useEffect(() => {
 //   localStorage.setItem("Task-list", JSON.stringify(tasks));
+// }, [tasks]);
+// useEffect(() => {
+//   localStorage.setItem("tasks", JSON.stringify(tasks));
 // }, [tasks]);
