@@ -30,7 +30,7 @@ function Done({ tasks, handledelete }) {
               </div>
 
               <div className="textarea" key={task.id}>
-                {""}
+                
                 {task.text}
               </div>
 
