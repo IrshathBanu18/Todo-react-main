@@ -21,7 +21,7 @@ function Addtodolist({ addTask, tasks, handledelete, handleedit }) {
   finalTime; // final time Time - 22:10
 
   function enterkeyPressed(event, value, id) {
-    if (event.keycode == 10) {
+    if (event.keycode == 13) {
       setValue(value);
       handleedit(value, id);
       event.target.contentEditable = false;
@@ -33,7 +33,7 @@ function Addtodolist({ addTask, tasks, handledelete, handleedit }) {
   function handleedit(e) {
     e.target.contentEditable = true;
   }
-  const onDragStart = (event, id) => {
+  const ondragstart = (event, id) => {
     console.log("dragstart", id);
     event.dataTransfer.setData("id", id);
   };
@@ -61,27 +61,27 @@ function Addtodolist({ addTask, tasks, handledelete, handleedit }) {
                 className="card"
                 draggable
                 onDragStart={(e) => {
-                  onDragStart(e, task.id);
-                }}
-              >
+                  ondragstart(e, task.id);
+                }}>
                 <div className="title">
                   Task:
                   <button
                     className="delete-btn"
-                    onClick={() => handledelete(task.id)}
-                  >
+                    onClick={() => handledelete(task.id)}>
                     X
                   </button>
                 </div>
                 <div
-                  className="textarea"
-                  onKeyDown={(e) =>
-                    enterkeyPressed(e, e.target.innerHTML, task.id)
-                  }
-                  onClick={(e) => handleedit(e)}
-                >
-                  {task.text}
-                </div>
+                className="textarea"
+                key={task.id}
+                onKeyDown={(e) =>
+                  enterkeyPressed(e, e.target.innerHTML, task.id)
+                }
+                onClick={(e) => handleedit(e)}
+                //html={task.text}
+              >
+                {task.text}
+              </div>
                 <div>
                   <h6>
                     Task-time

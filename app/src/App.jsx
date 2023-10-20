@@ -67,9 +67,10 @@ function App() {
     }
   }
   function handleAdd(value) {
+    console.log(value);
     dispatch({
       type: "TASK_ADD",
-      // value: value,
+      value: value,
     });
   }
   function handledelete(id) {

@@ -15,26 +15,21 @@ function Done({ tasks, handledelete }) {
               draggable
               onDragStart={(e) => {
                 ondragstart(e, task.id);
-              }}
-            >
+              }}>
               <div className="title-bar">
                 Task:
                 <button
                   className="btn btn-danger Deletebtn"
                   onClick={() => {
                     handledelete(task.id);
-                  }}
-                >
+                  }}>
                   x
                 </button>
               </div>
 
               <div className="textarea" key={task.id}>
-                
                 {task.text}
               </div>
-
-             
             </div>
           ))}
       </div>
@@ -42,3 +37,4 @@ function Done({ tasks, handledelete }) {
   );
 }
 
+export default Done;
