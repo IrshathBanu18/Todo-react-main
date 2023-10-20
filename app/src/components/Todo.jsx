@@ -45,7 +45,7 @@ function Addtodolist({ addTask, tasks, handledelete, handleedit }) {
           <div className="title-todo">
             <h1>To-do</h1>
           </div>
-          <div className="delete-btn">
+          <div className="add-btn">
             <button onClick={addCard} className="btn btn-light delete-button">
               +
             </button>
